@@ -24,21 +24,21 @@ int main()
     // Simulate faults by sending signals
     if (memory->temperature > 220.0) 
     {
-    printf("FICM pid %d\n",smem_fault->pid);
-    printf("Temperature is too high. Fault detected!\n");
+    	printf("FICM pid %d\n",smem_fault->pid);
+    	printf("Temperature is too high. Fault detected!\n");
         kill(smem_fault->pid,SIGTERM);
     }
 
     else if (smem_fault->fuelq==1) 
     {
-    printf("ECU pid %d\n",smem_fault->pid);
+    	printf("ECU pid %d\n",smem_fault->pid);
     	printf("Fuel leakage detected. Fault detected!\n");
         kill(smem_fault->pid,SIGKILL);
     }
-	else
-	{
+    else
+    {
     // Continue with normal program execution if no faults are detected
-    printf("No faults detected. Continuing normal execution.\n");
-}
-return 0;
+    	printf("No faults detected. Continuing normal execution.\n");
+	}
+	return 0;
 }
