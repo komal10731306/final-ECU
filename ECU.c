@@ -1,55 +1,53 @@
 #include "ecu.h"
 int main() 
 {
-
-  for (;;) {
-  menu:
-    printf(
-        "\n1)FUEL INJECTION CONTROL MODULE (FICM) \n2)IGNITION TIMING CONTROL "
-        "MODULE (ICTM)\n3)EMISSIONS COONTROL SUBSYSTEM (ECS)\n4)SENSOR DATA "
-        "FUSION (SDF)\n5)FAULT DETECTION AND REPORTING\n6)EXIT\n");
-    printf("\nENTER THE CHOICE\n");
-    scanf("%d", &choice);
-    printf("CHOOSED MODULE %d\n", choice);
-    if (choice == 1) 
-    {
-	int shmid;
-	shmid=shmget((key_t)23452,1024,0666);
-	if(shmid==-1)
+	for (;;) 
 	{
-		perror("FIRST EXECUTE SENSOR DATA FUSION MODULE\n");
-		goto menu;
-	}
-      	FICM();
-    } 
-    else if (choice == 2) 
-    {
-    	ICTM();
-    } 
-    else if (choice == 3) 
-    {
-    	ECS();
-    } 
-    else if (choice == 4) 
-    {
-      	SDF();
-    } 
-    else if (choice == 5) 
-    {
-    	FAULT();
-    } 
-    else if (choice == 6) 
-    {
-      printf("THANK YOU GOOD BYE");
-      exit(1);
-    } 
-    else 
-    {
-      printf("\nINVALID CHOICE\n");
-    }
+  		menu:
+    	printf("\n1)FUEL INJECTION CONTROL MODULE (FICM) \n2)IGNITION TIMING CONTROL MODULE (ICTM)\n3)EMISSIONS COONTROL SUBSYSTEM (ECS)\n4)SENSOR DATA "
+        "FUSION (SDF)\n5)FAULT DETECTION AND REPORTING\n6)EXIT\n");
+    	printf("\nENTER THE CHOICE\n");
+    	scanf("%d", &choice);
+		printf("CHOOSED MODULE %d\n", choice);
+    	if (choice == 1) 
+    	{
+			int shmid;
+			shmid=shmget((key_t)23452,1024,0666);
+			if(shmid==-1)
+			{
+				perror("FIRST EXECUTE SENSOR DATA FUSION MODULE\n");
+				goto menu;
+			}
+      		FICM();
+   		} 
+    	else if (choice == 2) 
+    	{
+    		ICTM();
+   		} 
+    	else if (choice == 3) 
+    	{
+    		ECS();
+    	} 
+    	else if (choice == 4) 
+    	{
+      		SDF();
+    	} 
+    	else if (choice == 5) 
+    	{
+    		FAULT();
+    	} 
+    	else if (choice == 6) 
+    	{
+      		printf("\nTHANK YOU GOOD BYE\n");
+      		exit(1);
+    	} 
+    	else 
+    	{
+      		printf("\nINVALID CHOICE\n");
+    	}
 
-  } // end of for
-  return 0;
+	} // end of for
+ 	return 0;
 }
 void SDF()
 {
@@ -63,21 +61,13 @@ void SDF()
     }
     shared_memory=(SDFP)shmat(shmid,NULL,0);
     printf("\n RECEIVED DATA\n Temperature:%.2f\n Speed:%.2f\n Pressure:%.2f\n Fused:%.2f\n",shared_memory->temperature,shared_memory->speed,shared_memory->pressure,shared_memory->fused);
-    
 }
 void FICM()
 {
-		
 	struct FICM *shared_memory;
-	
 	int shmid;
 	shmid=shmget((key_t)23452,1024,0666| IPC_CREAT);
-	printf("KEY OF THESHARED MEMORY IS %d\n",shmid);
-
 	shared_memory =shmat(shmid,NULL,0);
-
-	//printf("\n process attached at %p \n",shared_memory);
-
 	printf("DATA READ FROM FICM IS FUEL :%d\t TIME %s\n",shared_memory->fuel  , shared_memory->time);
 }
 void ICTM()
@@ -85,40 +75,33 @@ void ICTM()
 	//meassage queue key
 	key_t key=12345;
 	int msgid=msgget(key,0666|IPC_CREAT);
-	
 	if(msgid==-1)
 	{
 		perror("\nMESSAGE QUEUE NOT CREATED OR NOT FOUND\n");
 		exit(1);
 	}
-
 	while(1)
 	{
 		
 		msgrcv(msgid,&msg,sizeof(struct message),0,0);
 		printf("_________________________________________________");
-		
 		// if block is executed when key flag is 0
 		if(!msg.key)
 		{
 			printf("\nKEY IS NOT ON\n");
 		}
-		
 		if(!msg.seat)
 		{
 			printf("\nSEAT BELTS ARE NOT WORN\n");
 		}
-		
 		if(!msg.door)
 		{
 			printf("\nDOORS ARE NOT LOCKED\n");
 		}
-		
 		if(!msg.h_break)
 		{
 			printf("\nHANDBREAKS ARE NOT APPLIED\n");
 		}
-
 		// when all the flags are set to 1 car gets on
 		if(msg.key && msg.seat && msg.door && msg.h_break)
 		{	
@@ -136,26 +119,22 @@ void ECS(void)
 	struct sockaddr_in server_addr;
     char buffer[MAX_BUFFER_SIZE];
     char updateBuffer[MAX_BUFFER_SIZE];
-
     // Create socket
     client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socket == -1) {
         perror("Error creating socket");
         exit(EXIT_FAILURE);
     }
-
     // Set up server address struct
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = inet_addr(SERVER_IP);//binary byte order formet
     server_addr.sin_port = htons(PORT);
-
     // Connect to server
     if (connect(client_socket, (struct sockaddr*)&server_addr, sizeof(server_addr)) == -1) {
         perror("Error connecting to server");
         close(client_socket);
         exit(EXIT_FAILURE);
     }
-
     // Receive and print the three text messages
     for (uint8_t i = 0; i < 3; ++i) 
     {
@@ -204,11 +183,11 @@ void ECS(void)
 }
 void FAULT()
 {
-bool f;
-printf("IS FUEL LEAKAGE PRESENT? (0 for NO 1 for YES)\n");
-scanf("%d",&f);
-if(f)
-{
+	bool f;
+	printf("IS FUEL LEAKAGE PRESENT? (0 for NO 1 for YES)\n");
+	scanf("%d",&f);
+	if(f)
+	{
  		int pid;
   		int shmid2;
 		pid=getpid();
@@ -220,5 +199,5 @@ if(f)
   		smem_fault->fuelq=f;
 		printf("process ID FICM %d\n",smem_fault->pid);
 		sleep(15);
-}
+	}
 }
