@@ -18,7 +18,7 @@
 
 void SDF(void);
 void ICTM(void);
-int ECS(void);
+void ECS(void);
 void FICM(void);
 void FAULT(void);
 
@@ -177,7 +177,7 @@ void ICTM()
 		}
 	}
 }
-int ECS(void)
+void ECS(void)
 {
 	int client_socket,server_socket;
 	bool flag=0;
