@@ -10,3 +10,4 @@
 #define PORT 12345
 #define MAX_BUFFER_SIZE 1024
 void handle_client(int );
+uint16_t getupdatetominimum(uint16_t ,char *);
