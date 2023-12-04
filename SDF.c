@@ -51,9 +51,9 @@ struct SDF input() {
     float input;
     float temp, pressure, speed;
     // assigning weights as per algorithm
-    float w_temp = 0.4;
-    float w_pressure = 0.3;
-    float w_speed = 0.3;
+    float w_temp = 0.4; // w_temp is weight assigned to temperature
+    float w_pressure = 0.3; // w_pressure is weight assigned to pressure
+    float w_speed = 0.3;// w_speed is weight assigned to speed
 
     int n = 3;
     srand(time(0));
@@ -67,6 +67,7 @@ struct SDF input() {
         if (temp < 180) {
             printf("\nINVALID INPUT\n");
         }
+        // pmin is minimum pressure and pmax is maximum pressure
         int pmin = 25, pmax = 65;
         pressure = rand() % (pmax - pmin + 1) + pmin;
         printf("\nTHE PRESSURE (in KiloPascals(kPA)) (25-65)\n");
@@ -75,7 +76,7 @@ struct SDF input() {
         if (pressure < 25 || pressure > 65) {
             printf("\nINVALID INPUT\n");
         }
-
+        //smin is minimum speed and smax is maximum speed
         int smin = 0, smax = 4000;
         speed = rand() % (smax - smin + 1) + smin;
         printf("\nTHE SPEED (IN RPM) (0-4000)\n");
@@ -90,9 +91,9 @@ struct SDF input() {
         avg.speed += speed;
     }
     // Calculate average values
-    avg.temperature /= n;
-    avg.pressure /= n;
-    avg.speed /= n;
+    avg.temperature /= n;  // average temperature
+    avg.pressure /= n;    // average pressure
+    avg.speed /= n;       // average speed
     // Perform senor data fusion(weighted average method )
     avg.fused = (avg.temperature * w_temp) + (avg.pressure * w_pressure) +
                             (avg.speed * w_speed);
