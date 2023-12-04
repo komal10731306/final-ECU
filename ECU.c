@@ -61,9 +61,16 @@ int main()
         "FUSION (SDF)\n5)FAULT DETECTION AND REPORTING\n6)EXIT\n");
     printf("\nENTER THE CHOICE\n");
     scanf("%d", &choice);
-    printf("%d", choice);
+    printf("CHOOSED MODULE %d\n", choice);
     if (choice == 1) 
     {
+	int shmid;
+	shmid=shmget((key_t)23452,1024,0666);
+	if(shmid==-1)
+	{
+		perror("FIRST EXECUTE SENSOR DATA FUSION MODULE\n");
+		goto menu;
+	}
       	FICM();
     } 
     else if (choice == 2) 
@@ -248,10 +255,10 @@ void ECS(void)
 }
 void FAULT()
 {
-int f,choice;
-printf("IS FUEL LEAKAGE PRESENT?\n");
+bool f;
+printf("IS FUEL LEAKAGE PRESENT? (0 for NO 1 for YES)\n");
 scanf("%d",&f);
-if(f!=0)
+if(f)
 {
  		int pid;
   		int shmid2;
