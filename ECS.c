@@ -1,20 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <arpa/inet.h>
-#include<time.h>
-
-#define PORT 12345
-#define MAX_BUFFER_SIZE 1024
+#include "ecs.h"
 uint16_t Max=2100,Min=900;
-
 int server_socket, client_socket;
-uint16_t randominput(uint16_t ,uint16_t );
-uint16_t getupdatetominimum(uint16_t ,char *);
-void handle_client(int ) ;
 //randominput: to generate a random input
 int main() 
 {
