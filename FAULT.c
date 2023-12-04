@@ -1,6 +1,5 @@
 #include "fault.h"
 // Signal handlers
-}
 int main() 
 {
 	int shmid,key_t=23452;
