@@ -7,12 +7,16 @@
 #include<sys/shm.h>
 #include<stdint.h>
 #include<time.h>
-#include<mqueue.h>
-struct FICM{
+struct FICM
+{
 	int fuel;
 	char time[30];
 };
-
+struct FAULT
+{
+	int pid;
+	int fuelq;
+};
 
 struct SDF{
     float temperature;
@@ -22,45 +26,8 @@ struct SDF{
 };
 int fuel;
 char* f_time;
-
-int random_input(int min,int max)
-{
-	srand(time(0));
-	return rand() % (max-min+1)+min;
-}
-
-int calculate(int speed,int t_pos){
-	fuel =0;
-	if((speed >=0 && speed<500) && (t_pos>=0 && t_pos <20))
-	{
-      		fuel=12;
-    	}
-    	else if ((speed >=500 && speed<1000) && (t_pos>=20 && t_pos <40))
-    	{
-      		fuel=18;
-    	}
-    		else if ((speed >=1000 && speed<2000) && (t_pos>=40 && t_pos <60))
-    	{
-      		fuel=24;
-    	}
-    		else if ((speed >=2000 && speed <3000) && (t_pos>=60 && t_pos <80))
-    	{
-      		fuel=30;
-    	}
-    		else if ((speed >=3000 && speed <=4000) && (t_pos>=80 && t_pos <=100))
-    	{
-    		fuel=36;
-    	}
-    		else
-    	{
-      		printf("\nTHROTTLE POSITON AND RPM IS INVALID\n");
-      		return 1;
-    	}
-    	f_time=__TIME__;
- 	printf("\n FUEL INJECTED:%dml\t TIME OF INJECTION:%s\n",fuel,f_time);
- 	
-}
-
+int calculate(int ,int );
+int random_input(int ,int );
 int main()
 {
 
@@ -81,11 +48,9 @@ int main()
   	{
   		printf("\nENGINE TEMPERATURE IS TOO HIGH , FUEL INJECTION TUBE WILL NOT WORK UNTIL TEMPERATURE FALLS BELOW 220 CELSIUS\n");
 
-		int pid;
-  		int shmid2;
+		int pid,shmid2, key=11111;
 		pid=getpid();
 		struct FAULT *smem_fault;
-  		int key=11111;
   		shmid2=shmget(key,1024,0666| IPC_CREAT);
   		smem_fault=(struct FAULT *)shmat(shmid2,NULL,0);
   		smem_fault->pid=pid;
@@ -132,3 +97,42 @@ int main()
   	printf("FUEL INJECTED : %d\tTIME OF INJECTION:%s\n",shared_memory->fuel,shared_memory->time);
   	
 }
+int random_input(int min,int max)
+{
+	srand(time(0));
+	return rand() % (max-min+1)+min;
+}
+
+int calculate(int speed,int t_pos){
+	fuel =0;
+	if((speed >=0 && speed<500) && (t_pos>=0 && t_pos <20))
+	{
+      		fuel=12;
+    	}
+    	else if ((speed >=500 && speed<1000) && (t_pos>=20 && t_pos <40))
+    	{
+      		fuel=18;
+    	}
+    		else if ((speed >=1000 && speed<2000) && (t_pos>=40 && t_pos <60))
+    	{
+      		fuel=24;
+    	}
+    		else if ((speed >=2000 && speed <3000) && (t_pos>=60 && t_pos <80))
+    	{
+      		fuel=30;
+    	}
+    		else if ((speed >=3000 && speed <=4000) && (t_pos>=80 && t_pos <=100))
+    	{
+    		fuel=36;
+    	}
+    		else
+    	{
+      		printf("\nTHROTTLE POSITON AND RPM IS INVALID\n");
+      		return 1;
+    	}
+    	f_time=__TIME__;
+ 	printf("\n FUEL INJECTED:%dml\t TIME OF INJECTION:%s\n",fuel,f_time);
+}
+
+
+
