@@ -126,9 +126,10 @@ void FICM()
 }
 void ICTM()
 {
+	//meassage queue key
 	key_t key=12345;
 	int msgid=msgget(key,0666|IPC_CREAT);
-
+	
 	if(msgid==-1)
 	{
 		perror("\nMESSAGE QUEUE NOT CREATED OR NOT FOUND\n");
@@ -137,13 +138,8 @@ void ICTM()
 
 	while(1)
 	{
-		msgrcv(msgid,&msg,sizeof(msg),0,0);
-		//if((msgrcv(msgid,&msg,sizeof(msg),0,0)==-1));
-		//{
-			//perror("\nMESSAGE NOT RECIEVED\n");
-			//exit(1);
-		//}
 		
+		msgrcv(msgid,&msg,sizeof(struct message),0,0);
 		printf("_________________________________________________");
 		
 		// if block is executed when key flag is 0
@@ -171,7 +167,7 @@ void ICTM()
 		if(msg.key && msg.seat && msg.door && msg.h_break)
 		{	
 			printf("\nSIGNAL IS SENT TO THE IGNITION COIL\n");
-			sleep(3);
+			sleep(2);
 			printf("\nVEHICLE IS ON RIDE SAFE\n");
 			break;
 		}
