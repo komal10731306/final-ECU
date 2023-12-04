@@ -9,10 +9,6 @@
 #include<mqueue.h>
 
 // Define signals for faults
-#define TEMP_FAULT_SIGNAL SIGUSR1
-#define SPEED_FAULT_SIGNAL SIGUSR2
-#define FUEL_FAULT_SIGNAL SIGINT
-
 struct FAULT
 {
 	int pid;
@@ -27,19 +23,6 @@ struct SDF{
 };
 struct SDF *memory;
 // Signal handlers
-void temperatureFaultHandler(int signo) {
-    printf("Temperature is too high. Fault detected!\n");
-    exit(EXIT_FAILURE);
-}
-
-/*void speedFaultHandler(int signo) {
-    printf("High speed detected. Fault detected!\n");
-    exit(EXIT_FAILURE);
-}*/
-
-void fuelLeakageHandler(int signo) {
-    printf("Fuel leakage detected. Fault detected!\n");
-    exit(EXIT_FAILURE);
 }
 int main() 
 {
@@ -59,11 +42,7 @@ int main()
     struct FAULT *smem_fault;
     shmidnew=shmget((key_t1),1024,0666| IPC_CREAT);
     smem_fault=(struct FAULT *)shmat(shmidnew,NULL,0);
-    
-       signal(TEMP_FAULT_SIGNAL, temperatureFaultHandler);
-    //signal(SPEED_FAULT_SIGNAL, speedFaultHandler);
-    signal(FUEL_FAULT_SIGNAL, fuelLeakageHandler);
-    
+
     // Register signal handlers
 
     // Simulate faults by sending signals
@@ -71,14 +50,14 @@ int main()
     {
     printf("FICM pid %d\n",smem_fault->pid);
     printf("Temperature is too high. Fault detected!\n");
-        kill(smem_fault->pid,TEMP_FAULT_SIGNAL);
+        kill(smem_fault->pid,SIGTERM);
     }
 
     else if (smem_fault->fuelq==1) 
     {
     printf("ECU pid %d\n",smem_fault->pid);
     	printf("Fuel leakage detected. Fault detected!\n");
-        kill(smem_fault->pid,FUEL_FAULT_SIGNAL);
+        kill(smem_fault->pid,SIGKILL);
     }
 	else
 	{
