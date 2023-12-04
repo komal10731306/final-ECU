@@ -40,5 +40,5 @@ int main()
     // Continue with normal program execution if no faults are detected
     printf("No faults detected. Continuing normal execution.\n");
 }
-   return 0;
+return 0;
 }
