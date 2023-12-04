@@ -52,23 +52,7 @@ struct message{
 struct message msg;
 int main() 
 {
-int f,choice;
-printf("IS FUEL LEAKAGE PRESENT?\n");
-scanf("%d",&f);
-if(f!=0)
-{
- 		int pid;
-  		int shmid2;
-		pid=getpid();
-		struct FAULT *smem_fault;
-  		int key=11111;
-  		shmid2=shmget(key,1024,0666| IPC_CREAT);
-  		smem_fault=(struct FAULT *)shmat(shmid2,NULL,0);
-  		smem_fault->pid=pid;
-  		smem_fault->fuelq=f;
-		printf("process ID FICM %d\n",smem_fault->pid);
-		sleep(15);
-}
+
   for (;;) {
   menu:
     printf(
@@ -268,4 +252,21 @@ int ECS(void)
 }
 void FAULT()
 {
+int f,choice;
+printf("IS FUEL LEAKAGE PRESENT?\n");
+scanf("%d",&f);
+if(f!=0)
+{
+ 		int pid;
+  		int shmid2;
+		pid=getpid();
+		struct FAULT *smem_fault;
+  		int key=11111;
+  		shmid2=shmget(key,1024,0666| IPC_CREAT);
+  		smem_fault=(struct FAULT *)shmat(shmid2,NULL,0);
+  		smem_fault->pid=pid;
+  		smem_fault->fuelq=f;
+		printf("process ID FICM %d\n",smem_fault->pid);
+		sleep(15);
+}
 }
