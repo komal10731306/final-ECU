@@ -9,10 +9,14 @@ int main()
         
 	struct FICM  *shared_memory;
 	struct SDF *memory;
-	int shmid,key_t=23452,speed,pos,temp;
-	//retrieving shared memory identifier
+	//shared memory id:to store shared memory identifier
+	int shmid;
+	int key_t=23452,speed,pos,temp;
+	//shared memory creation
 	shmid=shmget((key_t),1024,0666| IPC_CREAT);
+	//attaching the structure to shared memory
 	shared_memory =(struct FICM*)shmat(shmid,NULL,0);
+	//error handling
   	if(shmid==-1)
   	{
   		printf("SHARED MEMORY NOT ASSIGNED");
@@ -28,7 +32,9 @@ int main()
 		int pid,shmid2, key=11111;
 		pid=getpid();
 		struct FAULT *smem_fault;
+		//creation of shared memory to store pid
   		shmid2=shmget(key,1024,0666| IPC_CREAT);
+		//attaching the structure to shared memory
   		smem_fault=(struct FAULT *)shmat(shmid2,NULL,0);
   		smem_fault->pid=pid;
 		printf("process ID FICM %d\n",smem_fault->pid);
@@ -74,12 +80,13 @@ int main()
   	printf("FUEL INJECTED : %d\tTIME OF INJECTION:%s\n",shared_memory->fuel,shared_memory->time);
   	
 }
+//to generate a random value between min and max
 int random_input(int min,int max)
 {
 	srand(time(0));
 	return rand() % (max-min+1)+min;
 }
-
+//to calculate the fuel injection quantity and time
 int calculate(int speed,int t_pos){
 	fuel =0;
 	if((speed >=0 && speed<500) && (t_pos>=0 && t_pos <20))
