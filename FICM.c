@@ -1,21 +1,24 @@
 #include "ficm.h"
-int fuel;
+//to store quantity of fuel injection
+uint8_t fuel;
+//to keep track of fuel injection time
 char* f_time;
 
 int main()
 {
-
+        
 	struct FICM  *shared_memory;
 	struct SDF *memory;
 	int shmid,key_t=23452,speed,pos,temp;
+	//retrieving shared memory identifier
 	shmid=shmget((key_t),1024,0666| IPC_CREAT);
-	printf("KEY OF THESHARED MEMORY IS %d\n",shmid);
 	shared_memory =(struct FICM*)shmat(shmid,NULL,0);
   	if(shmid==-1)
   	{
   		printf("SHARED MEMORY NOT ASSIGNED");
   		exit(1);
   	}
+	//to access temperature from shared memory placed by data fusion model
   	memory=(struct SDF*)shmat(shmid,NULL,0);
   	printf("\nTEMPERATURE READ FROM DATA FUSION MODEL : %.2f\n",memory->temperature);
   	if (memory->temperature>220)
