@@ -11,8 +11,8 @@ int main(){
 	// message queue key
 	key_t key=12345;
 	//creation of message queue
-	
 	int msgid=msgget(key,0666|IPC_CREAT);
+	//error handling
 	if(msgid==-1)
 	{
 		perror("\nMESSAGE QUEUE NOT CREATED OR NOT FOUND\n");
@@ -26,7 +26,8 @@ int main(){
 	if(choice==1)
 	{
 	
-		do{
+		do
+		{
 			input();
 			//sending msg to message queue 
 			msgsnd(msgid,&msg,sizeof(msg),0);
