@@ -99,6 +99,7 @@ void ICTM()
         }
     }
 }
+//emission control subsystem
 void ECS(void)
 {
     int client_socket,server_socket;
