@@ -13,7 +13,7 @@ int main()
 	//shared_memory_id:to store shared memory identifier
  	int shmid;
 	//key of the shared memory
-	key_t=23452;
+	int key_t=23452;
 	int speed,pos,temp;
 
 	//creation of shared memory
