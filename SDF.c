@@ -1,14 +1,15 @@
 #include "sdf.h"
+// Define the structure for sensor data fusion
 struct SDF 
 {
-	float temperature;
+    float temperature;
     float speed;
     float pressure;
     float fused;
 };
 typedef struct SDF *SDFP;
 // function declaration
-struct SDF input();
+struct SDF SensorDataFusion();
 
 int main() {
     struct SDF sdata;
@@ -25,7 +26,7 @@ int main() {
         exit(0);
     }
     // function call
-    sdata = input();
+    sdata = SensorDataFusion();
     // copy the sensor data to shared memory
     *shared_memory = sdata;
 
@@ -33,11 +34,17 @@ int main() {
 	printf("\nSensor DATA\nTemperature:%.2f\nSpeed:%.2f\nPressure:%.2f\nFused:%.2f\n",shared_memory->temperature, shared_memory->speed,shared_memory->pressure, shared_memory->fused);
 }
 // Function to input sensor data and perform sensor data fusion
-struct SDF input() 
+/* Input: Takes parameter(temperatre,pressure,speed)
+          from sensor
+   Perform  senor data fusion(weighted average method)
+   Output: gets fused data */
+struct SDF SensorDataFusion()
 {
+   //avg: avearge variable
     struct SDF avg;
 
     float input;
+    // parameter are temperature,speed,pressure
     float temp, pressure, speed;
     // assigning weights as per algorithm
     float w_temp = 0.4;
@@ -49,14 +56,16 @@ struct SDF input()
     for (int i = 1; i <= n; i++) 
     {
         printf("----------------------------------------\n");
+	// min:minimum temperature and max:maximum temperature
         int min = 180, max = 220;
-
+        // random function to generate random values
         temp = rand() % (max - min + 1) + min;
         printf("\nTHE TEMPERATURE (in Celsius(C)) (>180)\n");
         printf("Temperature: %.2f\n", temp);
         if (temp < 180) {
             printf("\nINVALID INPUT\n");
         }
+	//pmin : minimum pressure and pmax : maximum pressure
         int pmin = 25, pmax = 65;
         pressure = rand() % (pmax - pmin + 1) + pmin;
         printf("\nTHE PRESSURE (in KiloPascals(kPA)) (25-65)\n");
@@ -65,7 +74,7 @@ struct SDF input()
         if (pressure < 25 || pressure > 65) {
             printf("\nINVALID INPUT\n");
         }
-
+        // smin : minimum speed and smax : maximum speed
         int smin = 0, smax = 4000;
         speed = rand() % (smax - smin + 1) + smin;
         printf("\nTHE SPEED (IN RPM) (0-4000)\n");
@@ -74,7 +83,7 @@ struct SDF input()
         if (speed < 0 || speed > 4000) {
             printf("\nINVALID INPUT\n");
         }
-
+        
         avg.temperature += temp;
         avg.pressure += pressure;
         avg.speed += speed;
