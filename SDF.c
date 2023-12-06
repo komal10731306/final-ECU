@@ -31,13 +31,13 @@ int main() {
     *shared_memory = sdata;
 
     // display the sensor data
-	printf("\nSensor DATA\nTemperature:%.2f\nSpeed:%.2f\nPressure:%.2f\nFused:%.2f\n",shared_memory->temperature, shared_memory->speed,shared_memory->pressure, shared_memory->fused);
+     printf("\nSensor DATA\nTemperature:%.2f\nSpeed:%.2f\nPressure:%.2f\nFused:%.2f\n",shared_memory->temperature, shared_memory->speed,shared_memory->pressure, shared_memory->fused);
 }
 // Function to input sensor data and perform sensor data fusion
 /* Input: Takes parameter(temperatre,pressure,speed)
           from sensor
    Perform  senor data fusion(weighted average method)
-   Output: gets fused data */
+   Output: fused data */
 struct SDF SensorDataFusion()
 {
    //avg: avearge variable
