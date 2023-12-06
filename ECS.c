@@ -1,10 +1,9 @@
 #include "ecs.h"
-//extern void ECS(void);
 uint16_t Max=2100,Min=900;
 int server_socket, client_socket;
-//randominput: to generate a random input
 int main() 
 {
+	//file creation to keep records for server data interaction 
 	FILE *fd;
     fd=fopen("recordECSs.txt","a");
     if(fd==NULL)
@@ -67,7 +66,7 @@ int main()
         return 0;
 	}    
 }
-
+//function to adjust values to range 
 uint16_t getupdatetominimum(uint16_t quantity,char *gasname)
 {
     printf("Adjusting the quantity of %s to minimum value\n",gasname);
@@ -89,6 +88,7 @@ uint16_t getupdatetominimum(uint16_t quantity,char *gasname)
     }
     return quantity;	
 }
+//to send data to client 
 void handle_client(int client_socket) 
 {
 	char buffer[1024]; char *fault;
@@ -103,13 +103,13 @@ void handle_client(int client_socket)
     uint16_t quantity_Carbon_monoxide,Nitrogen_oxide,Hydro_Carbons;
     bool flag=0;
     srand(time(0));
-    //return rand()%(Max-Min+1)+Min
+    //input using random function 
     quantity_Carbon_monoxide=rand()%(Max-Min+1)+Min;
     printf("Quantity of Carbon monoxide in %dppm\n",quantity_Carbon_monoxide);
-
+	//input using random function 
     Nitrogen_oxide=rand()%(Max-Min+1)+Min;
     printf("Quantity of Carbon monoxide in %dppm\n",Nitrogen_oxide);
-
+	//input using random function 
     Hydro_Carbons=rand()%(Max-Min+1)+Min;
     printf("Quantity of Carbon monoxide in %dppm\n",Hydro_Carbons);
     printf("\n");
@@ -118,12 +118,13 @@ void handle_client(int client_socket)
     while(flag==0)
     {
     	sprintf(text1,"%d",quantity_Carbon_monoxide);
-
+		//send data to client from server 
         if(send(client_socket, text1, strlen(text1),0)<0)
         {
     	    perror("Cannot send to client\n");
         }
         memset(buffer,'\0',sizeof(buffer));
+		//recv ack from client 
         if(recv(client_socket, buffer, sizeof(buffer),0)<0)
         {
         	perror("Cannot receive from client\n");
@@ -158,13 +159,14 @@ void handle_client(int client_socket)
 	while(flag==0)
 	{
 		sprintf(text2,"%d",Nitrogen_oxide);
-
+		//send data to client from server 
 		if(send(client_socket, text2, strlen(text2),0)<0)
 		{
 			perror("Cannot send to client\n");
 		} 
 
 		memset(buffer,'\0',sizeof(buffer));
+		//recv ack from client 
 		if(recv(client_socket, buffer, sizeof(buffer),0)<0)
 		{
 			perror("cannot receive from client\n");
@@ -197,11 +199,14 @@ void handle_client(int client_socket)
 	while(flag==0)
 	{
 		sprintf(text3,"%d",Hydro_Carbons);
+		//send data to client from server 
 		if(send(client_socket, text3, strlen(text3),0)<0)
 		{
 			perror("Cannot send to client\n");
 		}		
+		//clear buffer to NULL
 		memset(buffer,'\0',sizeof(buffer));
+		//recv ack from client 
 		if(recv(client_socket, buffer, sizeof(buffer),0)<0)
 		{
 			perror("Cannot receive from client\n");
