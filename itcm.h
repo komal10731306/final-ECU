@@ -9,13 +9,13 @@
 #include <stdbool.h>
 
 struct message{
-	//8 bit register  0-key 1-battery 2-armature 3-seat_belt 4-door_lock 5-hand_break
-	uint8_t reg; 
-	//hand break flag
-	bool h_break;
-	bool key; 
-	bool seat; 
-	bool door; 
+    //8 bit register  0-key 1-battery 2-armature 3-seat_belt 4-door_lock 5-hand_break
+    uint8_t reg; 
+    //hand break flag
+    bool h_break;
+    bool key; 
+    bool seat; 
+    bool door; 
 };
 
 struct message msg;
