@@ -9,13 +9,13 @@
 #include<time.h>
 struct FICM
 {
-	int fuel;
-	char time[30];
+  	int fuel;
+  	char time[30];
 };
 struct FAULT
 {
-	int pid;
-	int fuelq;
+  	int pid;
+  	int fuelq;
 };
 
 struct SDF{
