@@ -1,5 +1,8 @@
 #include "ficm.h"
+
+//to store fuel quantity
 int fuel;
+//to store fuel injection time
 char* f_time;
 
 int main()
