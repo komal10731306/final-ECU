@@ -3,18 +3,20 @@
 int main()
 {
     struct message msg;
+    //setting register and all the flags to 0
     msg.reg=0;
     msg.key=0;
     msg.seat=0;
     msg.door=0;
     msg.h_break=0;
+    //choice:is used to store user choice
     uint8_t choice;
 
     // message queue key
     key_t key=12345;
     //creation of message queue
-
     int msgid=msgget(key,0666|IPC_CREAT);
+    //error handling 
     if(msgid==-1)
     {
         perror("\nMESSAGE QUEUE NOT CREATED OR NOT FOUND\n");
@@ -30,7 +32,7 @@ int main()
 
         do{
             input();
-            //sending msg to message queue 
+            //sending msg structure variable to message queue 
             msgsnd(msgid,&msg,sizeof(msg),0);
         }while(msg.reg!=63);
     }
@@ -47,7 +49,7 @@ int main()
     }	
 }
 
-/*automated_input:to send 3 differnt use cases*/
+/*automated_input:to send 3 differnt use cases to message queue*/
 void a_input(int msgid){
 
     //1st use case: key=1, seat_belt=0, door=1, h_break=0
@@ -69,7 +71,8 @@ void a_input(int msgid){
     u_case[2].seat=1; 
     u_case[2].door=1; 
     u_case[2].h_break=1;
-
+    
+    //sending the test cases to message queue
     for(int i=0;i<3;i++)
     {
         msgsnd(msgid,&u_case[i],sizeof(struct message),0);
@@ -84,18 +87,18 @@ void input(){
     //if block is executed when key flag is 0 until set to 1
     if(!msg.key)
         k_on();
-
+    //if block is executed when seat flag is 0 until set to 1
     if(!msg.seat)
         s_belt();
-
+    //if block is executed when door flag is 0 until set to 1
     if(!msg.door)
         d_lock();
-
+    //if block is executed when hand break flag is 0 until set to 1
     if(!msg.h_break)
         hand_break();
 }
 
-/* key_on : to accept key parameter from the user*/
+/* key_on : to accept key parameter from the user and then sets key falg in accordance to user input*/
 void k_on(){
 
     //key label
@@ -119,55 +122,57 @@ void k_on(){
     }
 }
 
-/* seat_belt:to accept seatbelt parameter*/
+/* seat_belt:to accept seatbelt parameter and then sets seat belt flag*/
 void s_belt(){
 
         belt:
     printf("\nPLEASE WEAR ON THE SEAT BELTS : 0 for NO 1 for YES\n");
     scanf("%hhd",&val);
-
+    //error handling
     if(val>1 || val<0)
     {
         printf("\nINVALID INPUT\n");
         goto belt;
     }
-
+    
     if(val==1)
     {
         // setting 4th bit of reg
         msg.reg=msg.reg|(1<<3);
+        //setting seat belt flag to 1
         msg.seat=1;
     }
 }
 
-/* door_lock:to accept door lock parameter*/
+/* door_lock:to accept door lock parameter and then sets door lock flag*/
 void d_lock(){
 
     lock:
     printf("\nPLEASE LOCK THE DOORS : 0 for NO 1 for YES\n");
     scanf("%hhd",&val);
-
+    //error handling
     if(val>1 || val<0)
     {
         printf("\nINVALID INPUT\n");
         goto lock;
     }
-
+    
     if(val==1)
     {
         //setting 5th bit of reg
         msg.reg=msg.reg|(1<<4);
+        //setting door flag to 1
         msg.door=1;
     }
 }
 
-/* hand_break:to accept hand break parametr*/
+/* hand_break:to accept hand break parametr and then sets hand break flag*/
 void hand_break(){
 
     brk:
     printf("\nPLEASE APLLY HANDBREAKS : 0 for NO 1 for YES\n");
     scanf("%hhd",&val);
-
+    //error handling
     if(val>1 || val<0)
     {
         printf("\nINVALID INPUT\n");
@@ -178,6 +183,7 @@ void hand_break(){
     {
         //setting 6th bit of reg
         msg.reg=msg.reg|(1<<5);
+        //setting hand break flag to 1
         msg.h_break=1;
     }
 }
