@@ -13,8 +13,11 @@ struct message{
     uint8_t reg; 
     //hand break flag
     bool h_break;
+    //key flag
     bool key; 
+    //seat belt flag
     bool seat; 
+    //door lock flag
     bool door; 
 };
 
