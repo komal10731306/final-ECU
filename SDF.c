@@ -83,7 +83,7 @@ struct SDF SensorDataFusion()
         if (speed < 0 || speed > 4000) {
             printf("\nINVALID INPUT\n");
         }
-        
+        //sum of data from sensor such as temperature,pressure,speed
         avg.temperature += temp;
         avg.pressure += pressure;
         avg.speed += speed;
