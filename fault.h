@@ -12,7 +12,7 @@
 struct FAULT
 {
     int pid;
-	int fuelq;
+    int fuelq;
 };
 
 struct SDF{
