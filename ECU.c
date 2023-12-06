@@ -55,10 +55,13 @@ void FICM()
 }
 void ICTM()
 {
-  //meassage queue key
-  //system("xterm -w ./ITCM");
+    
+    //system("xterm -w ./ITCM");
+    //meassage queue key
     key_t key=12345;
+    //creation of message queue
     int msgid=msgget(key,0666|IPC_CREAT);
+    //error handling
     if(msgid==-1)
     {
         perror("\nMESSAGE QUEUE NOT CREATED OR NOT FOUND\n");
@@ -66,10 +69,10 @@ void ICTM()
     }
     while(1)
     {
-
+        //retrieves first message from the message queue
         msgrcv(msgid,&msg,sizeof(struct message),0,0);
         printf("_________________________________________________");
-    // if block is executed when key flag is 0
+        // if block is executed when key flag is 0
         if(!msg.key)
         {
             printf("\nKEY IS NOT ON\n");
