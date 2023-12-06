@@ -53,7 +53,7 @@ int main()
 	
 	printf("\nSPEED \t \tTHROTTLE POSITION\n0-499 \t \t 00-19\n500-999 \t ""20-39\n1000-1999 \t 40-59\n2000-2999\t 60-79\n3000-4000 \t 80-100");
 	//6 user test cases
-	printf("\n______________________________________________\n");
+    printf("\n______________________________________________\n");
     speed=random_input(0,499); pos=random_input(0,19);
     printf("\n\nSPEED : %d\tTHROTTLE POSITION : %d\n",speed,pos);
     calculate(speed,pos);
