@@ -14,7 +14,7 @@ struct FAULT
     int pid;
     int fuelq;
 };
-
+//structure for sensor data fusion 
 struct SDF{
     float temperature;
     float speed;
