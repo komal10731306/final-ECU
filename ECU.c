@@ -170,25 +170,25 @@ void ECS(void)
     // Close the socket
     close(client_socket);
 }
+//fault module 
 int FAULT()
 {
     bool f;
+    //user input 
     printf("IS FUEL LEAKAGE PRESENT? (0 for NO 1 for YES)\n");
     scanf("%d",&f);
     if(f)
     {
-        int pid;
-        int shmid2;
+        int pid,shmid2,key=11111;
         pid=getpid();
         struct FAULT *smem_fault;
-        int key=11111;
         shmid2=shmget(key,1024,0666| IPC_CREAT);
         smem_fault=(struct FAULT *)shmat(shmid2,NULL,0);
         smem_fault->pid=pid;
         smem_fault->fuelq=f;
         printf("\nprocess ID  %d\n",smem_fault->pid);
+        //execution of fault module using system 
         system("./FAULT");
-        //sleep(15);     
         return 0;
     }
     printf("\nNO FAULT DETECTED\n");
